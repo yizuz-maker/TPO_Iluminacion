@@ -5,7 +5,7 @@ PRODUCTOS = [
     "LAMPARA DE TECHO",
     "LAMPARA DE PARED",
     "LAMPARA DE MESA",
-    "LAMPARA DE PIE",
+    "LAMPARA DE PIERNAS",
     "LUMINARIAS",
 ]
 MODELOS = [1, 2, 3, 4]
@@ -54,7 +54,7 @@ def generarVentas(VENTASPORDIA):
     return cantVentas
 
 
-def generarDatosDia(mes, anio):
+def generarDatosMes(mes, anio):
     listaDatos = []
     fechas = generarMes(mes,anio)
 
@@ -72,23 +72,10 @@ def generarDatosDia(mes, anio):
 
     return listaDatos
 
-""""""""""
-def generarVentasMes(mes, anio):
-    dias_del_mes = obtenerDia(mes, anio)
-    ventas_mes = []
-
-    for dia in range(1, dias_del_mes + 1):
-        ventas_del_dia = generarDatosDia(mes, anio)
-  
-        for i in range(len(ventas_del_dia)):
-            ventas_mes.append(ventas_del_dia[i])
-    return ventas_mes
-"""""""""
-
 
 mes = 2 
 anio = 2024
-ventas_mes = generarDatosDia(mes, anio)
+ventas_mes = generarDatosMes(mes, anio)
 
 
 for venta in range(len(ventas_mes)):
