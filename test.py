@@ -47,7 +47,7 @@ def generarFecha(mes, anio):
 
 
 def generarVentas(VENTASPORDIA):
-    cantVentas = random.choice(VENTASPORDIA)
+    cantVentas = random.randint(VENTASPORDIA[0],VENTASPORDIA[1])
     return cantVentas
 
 
