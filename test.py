@@ -27,7 +27,7 @@ def generarProducto(PRODUCTOS):
     return producto
 
 
-def obtenerDia(mes, anio):
+def obtenerDias(mes, anio):
     dias_por_mes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     # Comprobamos si es un año bisiesto
@@ -37,13 +37,16 @@ def obtenerDia(mes, anio):
     return dias_por_mes[mes - 1]
 
 
-def generarFecha(mes, anio):
-    cantDias = obtenerDia(mes, anio)
-    dia = random.randint(1, cantDias)
+def generarMes(mes, anio):
 
-    fecha = [dia, mes, anio]
+    diasDelMes = []
 
-    return fecha
+    for i in range(obtenerDias(mes, anio)):
+        
+        dia = (i + 1)
+        diasDelMes.append(dia)
+        
+    return diasDelMes
 
 
 def generarVentas(VENTASPORDIA):
@@ -52,20 +55,24 @@ def generarVentas(VENTASPORDIA):
 
 
 def generarDatosDia(mes, anio):
-    ventas = generarVentas(VENTASPORDIA)
     listaDatos = []
+    fechas = generarMes(mes,anio)
 
-    for i in range(ventas):
-        clienteId = generarID(PARAMETROS_ID)
-        modelo = generarModelo(MODELOS)
-        producto = generarProducto(PRODUCTOS)
-        fecha = generarFecha(mes, anio)
+    for dia in range(len(fechas)):
+        ventas = generarVentas(VENTASPORDIA)
 
-        listaDatos.append([clienteId,producto,modelo, fecha])
+
+        for i in range(ventas):
+            clienteId = generarID(PARAMETROS_ID)
+            modelo = generarModelo(MODELOS)
+            producto = generarProducto(PRODUCTOS)
+        
+
+            listaDatos.append([fechas[dia],clienteId,producto,modelo])
 
     return listaDatos
 
-
+""""""""""
 def generarVentasMes(mes, anio):
     dias_del_mes = obtenerDia(mes, anio)
     ventas_mes = []
@@ -76,11 +83,16 @@ def generarVentasMes(mes, anio):
         for i in range(len(ventas_del_dia)):
             ventas_mes.append(ventas_del_dia[i])
     return ventas_mes
+"""""""""
 
 
-mes = 8 
+mes = 2 
 anio = 2024
-ventas_mes = generarVentasMes(mes, anio)
+ventas_mes = generarDatosDia(mes, anio)
+
 
 for venta in range(len(ventas_mes)):
     print(ventas_mes[venta])
+print(len(ventas_mes))
+
+
