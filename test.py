@@ -12,6 +12,7 @@ MODELOS = [1, 2, 3, 4]
 PARAMETROS_ID = [1000, 9999]
 
 
+
 def generarID(PARAMETROS_ID):
     id_cliente = random.randint(PARAMETROS_ID[0], PARAMETROS_ID[1])
     return id_cliente
@@ -25,6 +26,58 @@ def generarModelo(MODELOS):
 def generarProducto(PRODUCTOS):
     producto = random.choice(PRODUCTOS)
     return producto
+
+def calcularPrecios(producto,modelo):
+    valorFinal = 0
+    if (producto == "LAMPARA DE TECHO"):
+        if(modelo == 1):
+            valorFinal = 45000
+        elif(modelo == 2):
+            valorFinal = 60000
+        elif(modelo == 3):
+            valorFinal = 88000
+        elif(modelo == 4):
+            valorFinal = 100000
+    elif (producto == "LAMPARA DE PARED"):
+        if(modelo == 1):
+            valorFinal = 23500
+        elif(modelo == 2):
+            valorFinal = 44000
+        elif(modelo == 3):
+            valorFinal = 64000
+        elif(modelo == 4):
+            valorFinal = 85000
+    elif (producto == "LAMPARA DE MESA"):
+        if(modelo == 1):
+            valorFinal = 20000
+        elif(modelo == 2):
+            valorFinal = 25000
+        elif(modelo == 3):
+            valorFinal = 28000
+        elif(modelo == 4):
+            valorFinal = 30000
+    elif (producto == "LAMPARA DE PIE"):
+        if(modelo == 1):
+            valorFinal = 35000
+        elif(modelo == 2):
+            valorFinal = 40000
+        elif(modelo == 3):
+            valorFinal = 43000
+        elif(modelo == 4):
+            valorFinal = 50000
+    elif (producto == "LUMINARIAS"):
+        if(modelo == 1):
+            valorFinal = 2100
+        elif(modelo == 2):
+            valorFinal = 3200
+        elif(modelo == 3):
+            valorFinal = 3800
+        elif(modelo == 4):
+            valorFinal = 4800
+    return valorFinal
+            
+            
+
 
 
 def obtenerDias(mes, anio):
@@ -60,8 +113,7 @@ def generarDatosMes(mes, anio):
 
     for dia in range(len(fechas)):
         ventas = generarVentas(VENTASPORDIA)
-
-
+ 
         for i in range(ventas):
             clienteId = generarID(PARAMETROS_ID)
             modelo = generarModelo(MODELOS)
@@ -79,7 +131,9 @@ ventas_mes = generarDatosMes(mes, anio)
 
 
 for venta in range(len(ventas_mes)):
-    print(ventas_mes[venta])
-print(len(ventas_mes))
+    vendido = ventas_mes[venta]
+    print(vendido)
+    print("$",calcularPrecios(vendido[2],vendido[3]))
+    
 
 
