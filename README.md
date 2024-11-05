@@ -20,9 +20,10 @@
 3. Dividir tareas
 
 
-# SIEMPRE ANTES DE HACER NADA SE HACE UN GIT PULL
+# SIEMPRE ANTES DE HACER NADA SE HACE UN GIT PULL EN LA CARPETA DEL PROYECTO
 
 ## COMO PUSHEAR:
+- CTRL S (para guardar)
 - git add .
 - git commit -m "descripcion del commit"
 - git push
