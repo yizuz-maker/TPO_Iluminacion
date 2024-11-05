@@ -18,4 +18,11 @@
 1. Armar estructura de carpetas (modularizar)
 2. Decidir cual es la opcion más dificil y dejarla para el final (hacerle focus todos)
 3. Dividir tareas
-4. hola 
+
+
+# SIEMPRE ANTES DE HACER NADA SE HACE UN GIT PULL
+
+## COMO PUSHEAR:
+- git add .
+- git commit -m "descripcion del commit"
+- git push
