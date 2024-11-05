@@ -9,8 +9,12 @@ PRODUCTOS = [
     "LUMINARIAS",
 ]
 MODELOS = [1, 2, 3, 4]
-PARAMETROS_ID = [1000, 9999]
-
+PARAMETROS_ID = [1000, 2000]
+PRECIO_LAMP_TECHO=[45000,60000,80000,100000]
+PRECIO_LAMP_PARED=[23500,44000,64000,85000]
+PRECIO_LAMP_MESA=[20000,25000,28000,30000]
+PRECIO_LAMP_PIE=[35000,40000,43000,50000]
+PRECIO_LUMINARIA=[2100,3200,3800,4800] 
 
 
 def generarID(PARAMETROS_ID):
@@ -30,56 +34,18 @@ def generarProducto(PRODUCTOS):
 def calcularPrecios(producto,modelo):
     valorFinal = 0
     if (producto == "LAMPARA DE TECHO"):
-        if(modelo == 1):
-            valorFinal = 45000
-        elif(modelo == 2):
-            valorFinal = 60000
-        elif(modelo == 3):
-            valorFinal = 88000
-        elif(modelo == 4):
-            valorFinal = 100000
+       valorFinal = PRECIO_LAMP_TECHO[modelo-1]
     elif (producto == "LAMPARA DE PARED"):
-        if(modelo == 1):
-            valorFinal = 23500
-        elif(modelo == 2):
-            valorFinal = 44000
-        elif(modelo == 3):
-            valorFinal = 64000
-        elif(modelo == 4):
-            valorFinal = 85000
+        valorFinal = PRECIO_LAMP_PARED[modelo-1]
     elif (producto == "LAMPARA DE MESA"):
-        if(modelo == 1):
-            valorFinal = 20000
-        elif(modelo == 2):
-            valorFinal = 25000
-        elif(modelo == 3):
-            valorFinal = 28000
-        elif(modelo == 4):
-            valorFinal = 30000
+       valorFinal = PRECIO_LAMP_MESA[modelo-1]
     elif (producto == "LAMPARA DE PIE"):
-        if(modelo == 1):
-            valorFinal = 35000
-        elif(modelo == 2):
-            valorFinal = 40000
-        elif(modelo == 3):
-            valorFinal = 43000
-        elif(modelo == 4):
-            valorFinal = 50000
+       valorFinal = PRECIO_LAMP_PIE[modelo-1]
     elif (producto == "LUMINARIAS"):
-        if(modelo == 1):
-            valorFinal = 2100
-        elif(modelo == 2):
-            valorFinal = 3200
-        elif(modelo == 3):
-            valorFinal = 3800
-        elif(modelo == 4):
-            valorFinal = 4800
+       valorFinal = PRECIO_LUMINARIA[modelo-1]
     return valorFinal
             
             
-
-
-
 def obtenerDias(mes, anio):
     dias_por_mes = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
@@ -118,22 +84,45 @@ def generarDatosMes(mes, anio):
             clienteId = generarID(PARAMETROS_ID)
             modelo = generarModelo(MODELOS)
             producto = generarProducto(PRODUCTOS)
-        
-
+    
             listaDatos.append([fechas[dia],clienteId,producto,modelo])
 
     return listaDatos
 
 
+def CalcularMesFacturado(ventasMes):
+    totalFacturado = 0
+    ventasTotales = len(ventas_mes)
+    totalCosto = 0
+    for i in range(ventasTotales):
+        venta = ventasMes[i]
+        valorVenta= calcularPrecios(venta[2],venta[3])
+        totalFacturado += valorVenta
+        totalCosto += calcularCostoProducto(venta)
+    return totalFacturado,ventasTotales,totalCosto
+
+
+def ClientesUnicos(ventasMes):
+    ventasTotales = len(ventas_mes)
+    clientesUnicos = []
+    for i in range(ventasTotales):
+        venta = ventasMes[i]
+        clienteExiste = False
+        for j in range(len(clientesUnicos)):
+            if venta[1] == clientesUnicos[j]:
+                clienteExiste = True      
+        if not clienteExiste:
+            clientesUnicos.append(venta[1])
+    return len(clientesUnicos)
+
+def calcularCostoProducto(vendido):
+    precio = calcularPrecios(vendido[2],vendido[3])
+    return precio // 2
+
 mes = 2 
 anio = 2024
 ventas_mes = generarDatosMes(mes, anio)
 
-
-for venta in range(len(ventas_mes)):
-    vendido = ventas_mes[venta]
-    print(vendido)
-    print("$",calcularPrecios(vendido[2],vendido[3]))
-    
-
+print(CalcularMesFacturado(ventas_mes))
+print(ClientesUnicos(ventas_mes))
 
