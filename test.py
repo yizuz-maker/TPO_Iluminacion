@@ -135,7 +135,7 @@ def calcularFacturacionPorCliente(ventas_mes):
                 resumen_clientes[j][1] += 1 
                 resumen_clientes[j][2] += precio 
                 cliente_existe = True
-                break
+                break # Esto no me gusta
         
         if not cliente_existe:
             resumen_clientes.append([cliente_id, 1, precio]) 
@@ -147,7 +147,7 @@ def mostrarResumen(resumen_clientes):
     for i in range(len(resumen_clientes)):
         for j in range(i + 1, len(resumen_clientes)):
             if resumen_clientes[i][2] < resumen_clientes[j][2]:
-                resumen_clientes[i], resumen_clientes[j] = resumen_clientes[j], resumen_clientes[i]
+                resumen_clientes[i], resumen_clientes[j] = resumen_clientes[j], resumen_clientes[i] # Esto tampoco me gusta
 
     print("Mes: Agosto 2024")
     print(f"{'ID cliente':<10} {'Total artículos':<15} {'Total facturado':<15}")
