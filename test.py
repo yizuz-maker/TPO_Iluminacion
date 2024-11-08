@@ -146,7 +146,7 @@ def calcularFacturacionPorCliente(ventas_mes):
 def mostrarResumen(resumen_clientes):
     for i in range(len(resumen_clientes)):
         for j in range(i + 1, len(resumen_clientes)):
-            if resumen_clientes[i][2] < resumen_clientes[j][2]:
+            if resumen_clientes[i][2] < resumen_clientes[j][2]: # Esta logica es para ordenar como se muestran las cosas en el print (algo no muy importante)
                 resumen_clientes[i], resumen_clientes[j] = resumen_clientes[j], resumen_clientes[i] # Esto tampoco me gusta
 
     print("Mes: Agosto 2024")
