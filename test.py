@@ -167,13 +167,34 @@ def mostrarDetalleDelDia(ventas_mes, dia):
             resultado.append([ventas_mes[i][1], ventas_mes[i][2], ventas_mes[i][3], calcularPrecios(ventas_mes[i][2], ventas_mes[i][3])])
     return resultado
 
+def mostrarDetallePorDia(ventas_mes): 
+    resultado_por_dia = [] 
+    contador = 0
+    acumulador = 0
+    for i in range(len(ventas_mes)):
+       
+        if i != len(ventas_mes) - 1: 
+            if ventas_mes[i][0] == ventas_mes[i+1][0]:
+                contador += 1
+                acumulador += calcularPrecios(ventas_mes[i][2], ventas_mes[i][3])
+            else:
+                ultima_venta = calcularPrecios(ventas_mes[i][2], ventas_mes[i][3])
+                resultado_por_dia.append([ventas_mes[i][0],contador+1, acumulador + ultima_venta])
+                contador = 0 
+                acumulador = 0
+        else: 
+            acumulador += calcularPrecios(ventas_mes[i][2], ventas_mes[i][3])
+            resultado_por_dia.append([ventas_mes[i][0],contador+1, acumulador])
+    return resultado_por_dia
+            
+    
+    
 
+# De acá para abajo hay informacion para debuggear
 
 mes = 2 
 anio = 2024
 ventas_mes = generarDatosMes(mes, anio)
-
-# De acá para abajo hay informacion para debuggear
 
 print("\n Ventas individuales")
 for venta in ventas_mes: #Esto tiene que desaparecer, porque sino desapareceemos nosotros
@@ -185,11 +206,16 @@ print()
 print("Lista con clientes")
 for cliente in resumen_clientes:
     print(cliente)
-print()
+
 mostrarResumen(resumen_clientes)
 
 print("\nDetalle Del dia")
 print(mostrarDetalleDelDia(ventas_mes, 4))
+
+mostrarDetallePorDia(ventas_mes)
+print("")
+
+
 
 """
 print(CalcularMesFacturado(ventas_mes))
