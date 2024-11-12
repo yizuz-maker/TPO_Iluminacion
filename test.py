@@ -130,12 +130,15 @@ def calcularFacturacionPorCliente(ventas_mes):
         precio = calcularPrecios(producto, modelo)
 
         cliente_existe = False
-        for j in range(len(resumen_clientes)):
+        j = 0
+        while (not cliente_existe) and (j < len(resumen_clientes)):
+            
             if resumen_clientes[j][0] == cliente_id:
                 resumen_clientes[j][1] += 1 
                 resumen_clientes[j][2] += precio 
                 cliente_existe = True
-                break # Esto no me gusta
+            j += 1 
+            
         
         if not cliente_existe:
             resumen_clientes.append([cliente_id, 1, precio]) 
@@ -157,6 +160,14 @@ def mostrarResumen(resumen_clientes):
         total_facturado = resumen_clientes[i][2]
         print(f"{cliente_id:<10} {total_articulos:<15} ${total_facturado:<15}")
 
+def mostrarDetalleDelDia(ventas_mes, dia):
+    resultado = []
+    for i in range(len(ventas_mes)):
+        if ventas_mes[i][0] == dia:
+            resultado.append([ventas_mes[i][1], ventas_mes[i][2], ventas_mes[i][3], calcularPrecios(ventas_mes[i][2], ventas_mes[i][3])])
+    return resultado
+
+
 
 mes = 2 
 anio = 2024
@@ -164,19 +175,21 @@ ventas_mes = generarDatosMes(mes, anio)
 
 # De acá para abajo hay informacion para debuggear
 
-print(ventas_mes)
+print("\n Ventas individuales")
 for venta in ventas_mes: #Esto tiene que desaparecer, porque sino desapareceemos nosotros
     print(venta)
 
 
 resumen_clientes = calcularFacturacionPorCliente(ventas_mes)
 print()
-print(resumen_clientes[0][2])
-print()
+print("Lista con clientes")
 for cliente in resumen_clientes:
     print(cliente)
 print()
 mostrarResumen(resumen_clientes)
+
+print("\nDetalle Del dia")
+print(mostrarDetalleDelDia(ventas_mes, 4))
 
 """
 print(CalcularMesFacturado(ventas_mes))
