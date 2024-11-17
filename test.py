@@ -187,6 +187,57 @@ def mostrarDetallePorDia(ventas_mes):
             resultado_por_dia.append([ventas_mes[i][0],contador+1, acumulador])
     return resultado_por_dia
             
+def mostrarTotalPorProductoYModelo(ventas_mes, producto_seleccionado):
+    # Filtrar ventas por el producto seleccionado
+    ventas_filtradas = []
+    for i in range(len(ventas_mes)):
+        if ventas_mes[i][2] == producto_seleccionado:
+            ventas_filtradas.append(ventas_mes[i])
+
+    if not ventas_filtradas:
+        print(f"No se encontraron ventas para el producto seleccionado: {producto_seleccionado}")
+        return
+
+    total_facturado = 0
+    total_ventas = 0
+    ventas_por_modelo = [0, 0, 0, 0]  # Contadores para modelos 1, 2, 3, y 4
+    clientes_unicos = []  # Lista para almacenar los clientes únicos
+    total_costo = 0
+
+    for i in range(len(ventas_filtradas)):
+        venta = ventas_filtradas[i]
+        modelo = venta[3]
+        cliente_id = venta[1]
+        precio = calcularPrecios(venta[2], modelo)
+        costo = calcularCostoProducto(venta)
+
+        # Sumar al total facturado y costo
+        total_facturado += precio
+        total_costo += costo
+        total_ventas += 1
+
+        # Incrementar el contador del modelo correspondiente
+        ventas_por_modelo[modelo - 1] += 1
+
+        # Verificar si el cliente es único`
+        cliente_existe = False
+        for j in range(len(clientes_unicos)):
+            if clientes_unicos[j] == cliente_id:
+                cliente_existe = True
+        if not cliente_existe:
+            clientes_unicos.append(cliente_id)
+
+    # Mostrar reporte
+    print(f"Mes: Agosto 2024")
+    print(f"Producto seleccionado: {producto_seleccionado}")
+    print(f"Total facturado: ${total_facturado}")
+    print(f"Total ventas realizadas: {total_ventas}")
+    for modelo in range(4):  # Iterar sobre los índices de modelos
+        print(f"Total ventas realizadas modelo {modelo + 1}: {ventas_por_modelo[modelo]}")
+    print(f"Total Clientes únicos: {len(clientes_unicos)}")
+    print(f"Total Costo adquisición productos vendidos: ${total_costo}")
+
+
     
     
 
@@ -195,6 +246,19 @@ def mostrarDetallePorDia(ventas_mes):
 mes = 2 
 anio = 2024
 ventas_mes = generarDatosMes(mes, anio)
+
+# Ejemplo de uso
+print("\nOpciones de productos:")
+for i in range(len(PRODUCTOS)):
+    print(f"{i + 1}. {PRODUCTOS[i]}")
+
+opcion = int(input("Seleccione un producto (1-5): "))
+if opcion >= 1 and opcion <=5:
+    producto_seleccionado = PRODUCTOS[opcion - 1]
+    mostrarTotalPorProductoYModelo(ventas_mes, producto_seleccionado)
+else:
+    print("Opción no válida.")
+
 
 print("\n Ventas individuales")
 for venta in ventas_mes: #Esto tiene que desaparecer, porque sino desapareceemos nosotros
@@ -214,7 +278,6 @@ print(mostrarDetalleDelDia(ventas_mes, 4))
 
 mostrarDetallePorDia(ventas_mes)
 print("")
-
 
 
 """
