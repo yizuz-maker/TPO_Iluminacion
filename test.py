@@ -90,23 +90,23 @@ def generarDatosMes(mes, anio):
     return listaDatos
 
 
-def CalcularMesFacturado(ventasMes):
+def CalcularMesFacturado(ventas_mes):
     totalFacturado = 0
     ventasTotales = len(ventas_mes)
     totalCosto = 0
     for i in range(ventasTotales):
-        venta = ventasMes[i]
+        venta = ventas_mes[i]
         valorVenta= calcularPrecios(venta[2],venta[3])
         totalFacturado += valorVenta
         totalCosto += calcularCostoProducto(venta)
     return totalFacturado,ventasTotales,totalCosto
 
 
-def ClientesUnicos(ventasMes):
+def ClientesUnicos(ventas_mes):
     ventasTotales = len(ventas_mes)
     clientesUnicos = []
     for i in range(ventasTotales):
-        venta = ventasMes[i]
+        venta = ventas_mes[i]
         clienteExiste = False
         for j in range(len(clientesUnicos)):
             if venta[1] == clientesUnicos[j]:
@@ -114,6 +114,20 @@ def ClientesUnicos(ventasMes):
         if not clienteExiste:
             clientesUnicos.append(venta[1])
     return len(clientesUnicos)
+
+def mostrarTotalMes(ventas_mes, mes, anio):
+    totalFacturado,ventasTotales,totalCosto = CalcularMesFacturado(ventas_mes)
+    clientesUnicos = ClientesUnicos(ventas_mes)
+    print("Opcion 1: Totales Mes\n")
+    print(f"Mes: {mes} {anio}\n")
+    print(f"Total Facturado: ${totalFacturado}")
+    print(f"Total ventas realizadas: {ventasTotales}")
+    print(f"Total cliente unicos: {clientesUnicos}")
+    print(f"Total Costo adquisición productos vendidos: ${totalCosto}")
+    
+    
+    
+
 
 def calcularCostoProducto(vendido):
     precio = calcularPrecios(vendido[2],vendido[3])
@@ -185,9 +199,23 @@ def mostrarDetallePorDia(ventas_mes):
         else: 
             acumulador += calcularPrecios(ventas_mes[i][2], ventas_mes[i][3])
             resultado_por_dia.append([ventas_mes[i][0],contador+1, acumulador])
-    return resultado_por_dia
             
-def mostrarTotalPorProductoYModelo(ventas_mes, producto_seleccionado):
+    return resultado_por_dia
+
+def seleccionarProducto():
+    print("1.........Lampara de Techo")
+    print("2.........Lampara de Pared")
+    print("3.........Lampara de Mesa")
+    print("4.........Lampara de Pie")
+    print("5.........Luminarias")
+
+    opcion = int(input("Seleccione un producto: "))
+    if opcion >= 1 and opcion <= 5:
+        return PRODUCTOS[opcion - 1]
+    else:
+        return None
+    
+def totalPorProductoYModelo(ventas_mes, producto_seleccionado):
     # Filtrar ventas por el producto seleccionado
     ventas_filtradas = []
     for i in range(len(ventas_mes)):
@@ -195,8 +223,8 @@ def mostrarTotalPorProductoYModelo(ventas_mes, producto_seleccionado):
             ventas_filtradas.append(ventas_mes[i])
 
     if not ventas_filtradas:
-        print(f"No se encontraron ventas para el producto seleccionado: {producto_seleccionado}")
-        return
+        print(f"No se encontraron ventas para el producto seleccionado")
+        return None
 
     total_facturado = 0
     total_ventas = 0
@@ -226,23 +254,78 @@ def mostrarTotalPorProductoYModelo(ventas_mes, producto_seleccionado):
                 cliente_existe = True
         if not cliente_existe:
             clientes_unicos.append(cliente_id)
+            
+        return[producto_seleccionado, total_facturado, total_ventas, ventas_por_modelo, len(clientes_unicos), total_costo]
 
-    # Mostrar reporte
-    print(f"Mes: Agosto 2024")
-    print(f"Producto seleccionado: {producto_seleccionado}")
-    print(f"Total facturado: ${total_facturado}")
-    print(f"Total ventas realizadas: {total_ventas}")
-    for modelo in range(4):  # Iterar sobre los índices de modelos
-        print(f"Total ventas realizadas modelo {modelo + 1}: {ventas_por_modelo[modelo]}")
-    print(f"Total Clientes únicos: {len(clientes_unicos)}")
-    print(f"Total Costo adquisición productos vendidos: ${total_costo}")
+def mostrarTotalPorProductoYModelo(ventas_mes, mes, anio):
+    producto_seleccionado = seleccionarProducto()
+    total = totalPorProductoYModelo(ventas_mes, producto_seleccionado)
+    if total is not None:
+        print("Opcion 2: Total por tipo de Producto y modelo.\n")
+        print(f"Mes: {mes} {anio}\n")
+        print(f"Producto seleccionado: {total[0]}\n")
+        
+        print(f"Total facturado: ${total[1]}")
+        print(f"Total ventas realizadas: {total[2]}")
+        print(f"\t Total ventas realizadas modelo 1: {total[3][0]}")
+        print(f"\t Total ventas realizadas modelo 2: {total[3][1]}")
+        print(f"\t Total ventas realizadas modelo 3: {total[3][2]}")
+        print(f"\t Total ventas realizadas modelo 4: {total[3][3]}")
+        print(f"Total Clientes Unicos: {total[4]}")
+        print(f"Total Costo adquisición productos vendidos: ${total[5]}")
+  
+def mostrarOpcionesMenu():
+    print("ILUMINACION")
+    print("------------------")
+    print("1...............Opcion 1: Totales Mes")
+    print("2...............Opcion 2: Total por tipo de Producto y modelo")
+    print("3...............Opcion 3: Detalle por Clientes")
+    print("4...............Opcion 4: Detalle por día")
+    print("5...............Opcion 5: Detalle del día")
+    print("6...............Opcion 6: SALIR")
 
-
+def menu(ventas_mes, mes, anio):
+    bandera = True
+    while bandera:
+        mostrarOpcionesMenu() 
+        opcion = int(input("Ingrese una opcion: "))
+        if (opcion >= 1 and opcion <= 6):
+            if opcion == 1:
+                mostrarTotalMes(ventas_mes,mes, anio)
+            elif opcion == 2: 
+                mostrarTotalPorProductoYModelo(ventas_mes,mes, anio)
+            
+            elif opcion == 6:
+                bandera = False
+                print("Saliendo del programa...")
+            else: 
+                print("Ha ocurrido un error")
+        else: 
+            print("Ingrese una opcion válida")
     
-    
 
+def ingresarMesyAnio():
+    mes = int(input("Ingrese el mes: "))
+    anio = int(input("Ingrese el año: "))
+    if mes>= 1 and mes <= 12:
+        return [mes, anio]
+    else: 
+        return None
+
+def main():
+    datos = ingresarMesyAnio()
+    if datos is not None: 
+        mes = datos[0]
+        anio = datos[1]
+        ventas_mes = generarDatosMes(mes, anio)
+        menu(ventas_mes, mes, anio)
+    else: 
+        print("Ingrese un mes correcto")
+
+
+main()
 # De acá para abajo hay informacion para debuggear
-
+"""
 mes = 2 
 anio = 2024
 ventas_mes = generarDatosMes(mes, anio)
@@ -280,7 +363,6 @@ mostrarDetallePorDia(ventas_mes)
 print("")
 
 
-"""
 print(CalcularMesFacturado(ventas_mes))
 print(ClientesUnicos(ventas_mes))
 """
