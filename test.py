@@ -160,13 +160,19 @@ def calcularFacturacionPorCliente(ventas_mes):
     return resumen_clientes
 
 
-def mostrarResumen(resumen_clientes):
+def mostrarCalcularFacturacionPorCliente(ventas_mes, mes, anio):
+    resumen_clientes = calcularFacturacionPorCliente(ventas_mes)
+    
     for i in range(len(resumen_clientes)):
         for j in range(i + 1, len(resumen_clientes)):
-            if resumen_clientes[i][2] < resumen_clientes[j][2]: # Esta logica es para ordenar como se muestran las cosas en el print (algo no muy importante)
-                resumen_clientes[i], resumen_clientes[j] = resumen_clientes[j], resumen_clientes[i] # Esto tampoco me gusta
-
-    print("Mes: Agosto 2024")
+            if resumen_clientes[i][2] < resumen_clientes[j][2]: 
+                aux = resumen_clientes[i]
+                resumen_clientes[i] = resumen_clientes[j]
+                resumen_clientes[j] = aux
+                 
+    
+    print("Opcion 3: Detalle por Clientes")
+    print(f"Mes: {mes} {anio}")
     print(f"{'ID cliente':<10} {'Total artículos':<15} {'Total facturado':<15}")
     for i in range(len(resumen_clientes)):
         cliente_id = resumen_clientes[i][0]
@@ -174,14 +180,34 @@ def mostrarResumen(resumen_clientes):
         total_facturado = resumen_clientes[i][2]
         print(f"{cliente_id:<10} {total_articulos:<15} ${total_facturado:<15}")
 
-def mostrarDetalleDelDia(ventas_mes, dia):
+def detalleDelDia(ventas_mes, dia):
     resultado = []
     for i in range(len(ventas_mes)):
         if ventas_mes[i][0] == dia:
             resultado.append([ventas_mes[i][1], ventas_mes[i][2], ventas_mes[i][3], calcularPrecios(ventas_mes[i][2], ventas_mes[i][3])])
     return resultado
 
-def mostrarDetallePorDia(ventas_mes): 
+def mostrarDetalleDelDia(ventas_mes, mes, anio):
+    dia = int(input("Ingrese un día: "))
+    dias_del_mes = obtenerDias(mes, anio)
+    for i in range(dias_del_mes):
+        if dia <= dias_del_mes:
+            detalle = detalleDelDia(ventas_mes, dia)
+            print("Opcion 5: Detalle del día")
+            print(f"Mes: {mes} {anio}")
+            print(f"{'ID cliente':<10} {'Tipo de producto':<15} {'Modelo':<15} {'Total facturado':<15}")
+            for i in range(len(detalle)):
+                cliente_id = detalle[i][0]
+                tipo_producto = detalle[i][1]
+                tpo_modelo = detalle[i][2]
+                total_facturado = detalle[i][3]
+                print(f"{cliente_id:<10} {tipo_producto:<15} {tpo_modelo:<15} ${total_facturado:<15}")
+            
+        else:
+            print("Ingrese un día valido")
+    
+
+def detallePorDia(ventas_mes): 
     resultado_por_dia = [] 
     contador = 0
     acumulador = 0
@@ -201,6 +227,17 @@ def mostrarDetallePorDia(ventas_mes):
             resultado_por_dia.append([ventas_mes[i][0],contador+1, acumulador])
             
     return resultado_por_dia
+
+def mostrarDetallePorDia(ventas_mes, mes ,anio):
+    resultado_por_dia = detallePorDia(ventas_mes)
+    print("Opcion 4: Detalle por día")
+    print(f"Mes: {mes} {anio}")
+    print(f"{'Dia':<10} {'Total ventas realizadas':<15} {'Total facturado del dia':<15}")
+    for i in range(len(resultado_por_dia)):
+        dia = resultado_por_dia[i][0]
+        total_ventas = resultado_por_dia[i][1]
+        total_facturado = resultado_por_dia[i][2]
+        print(f"{dia:<10} {total_ventas:<15} ${total_facturado:<15}")
 
 def seleccionarProducto():
     print("1.........Lampara de Techo")
@@ -294,7 +331,12 @@ def menu(ventas_mes, mes, anio):
                 mostrarTotalMes(ventas_mes,mes, anio)
             elif opcion == 2: 
                 mostrarTotalPorProductoYModelo(ventas_mes,mes, anio)
-            
+            elif opcion == 3:
+                mostrarCalcularFacturacionPorCliente(ventas_mes, mes, anio)
+            elif opcion == 4:
+                mostrarDetallePorDia(ventas_mes, mes, anio)
+            elif opcion == 5:
+                mostrarDetalleDelDia(ventas_mes, mes, anio)
             elif opcion == 6:
                 bandera = False
                 print("Saliendo del programa...")
@@ -310,11 +352,11 @@ def ingresarMesyAnio():
     if mes>= 1 and mes <= 12:
         return [mes, anio]
     else: 
-        return None
+        return -1
 
 def main():
     datos = ingresarMesyAnio()
-    if datos is not None: 
+    if datos != -1: 
         mes = datos[0]
         anio = datos[1]
         ventas_mes = generarDatosMes(mes, anio)
@@ -324,6 +366,7 @@ def main():
 
 
 main()
+
 # De acá para abajo hay informacion para debuggear
 """
 mes = 2 
