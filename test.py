@@ -190,21 +190,20 @@ def detalleDelDia(ventas_mes, dia):
 def mostrarDetalleDelDia(ventas_mes, mes, anio):
     dia = int(input("Ingrese un día: "))
     dias_del_mes = obtenerDias(mes, anio)
-    for i in range(dias_del_mes):
-        if dia <= dias_del_mes:
-            detalle = detalleDelDia(ventas_mes, dia)
-            print("Opcion 5: Detalle del día")
-            print(f"Mes: {mes} {anio}")
-            print(f"{'ID cliente':<10} {'Tipo de producto':<15} {'Modelo':<15} {'Total facturado':<15}")
-            for i in range(len(detalle)):
-                cliente_id = detalle[i][0]
-                tipo_producto = detalle[i][1]
-                tpo_modelo = detalle[i][2]
-                total_facturado = detalle[i][3]
-                print(f"{cliente_id:<10} {tipo_producto:<15} {tpo_modelo:<15} ${total_facturado:<15}")
-            
-        else:
-            print("Ingrese un día valido")
+    if dia <= dias_del_mes:
+        detalle = detalleDelDia(ventas_mes, dia)
+        print("Opcion 5: Detalle del día")
+        print(f"Mes: {mes} {anio}")
+        print(f"{'ID cliente':<10} {'Tipo de producto':<15} {'Modelo':<15} {'Total facturado':<15}")
+        for i in range(len(detalle)):
+            cliente_id = detalle[i][0]
+            tipo_producto = detalle[i][1]
+            tpo_modelo = detalle[i][2]
+            total_facturado = detalle[i][3]
+            print(f"{cliente_id:<10} {tipo_producto:<15} {tpo_modelo:<15} ${total_facturado:<15}")
+        
+    else:
+        print("Ingrese un día valido")
     
 
 def detallePorDia(ventas_mes): 
@@ -250,7 +249,7 @@ def seleccionarProducto():
     if opcion >= 1 and opcion <= 5:
         return PRODUCTOS[opcion - 1]
     else:
-        return None
+        return "Inexistente"
     
 def totalPorProductoYModelo(ventas_mes, producto_seleccionado):
     # Filtrar ventas por el producto seleccionado
@@ -261,7 +260,7 @@ def totalPorProductoYModelo(ventas_mes, producto_seleccionado):
 
     if not ventas_filtradas:
         print(f"No se encontraron ventas para el producto seleccionado")
-        return None
+        return -1
 
     total_facturado = 0
     total_ventas = 0
@@ -297,7 +296,7 @@ def totalPorProductoYModelo(ventas_mes, producto_seleccionado):
 def mostrarTotalPorProductoYModelo(ventas_mes, mes, anio):
     producto_seleccionado = seleccionarProducto()
     total = totalPorProductoYModelo(ventas_mes, producto_seleccionado)
-    if total is not None:
+    if total != -1:
         print("Opcion 2: Total por tipo de Producto y modelo.\n")
         print(f"Mes: {mes} {anio}\n")
         print(f"Producto seleccionado: {total[0]}\n")
