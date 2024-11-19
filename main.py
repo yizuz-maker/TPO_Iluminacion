@@ -626,14 +626,14 @@ def totalPorProductoYModelo(ventas_mes, producto_seleccionado):
         if not cliente_existe:
             clientes_unicos.append(cliente_id)
 
-        return [
-            producto_seleccionado,
-            total_facturado,
-            total_ventas,
-            ventas_por_modelo,
-            len(clientes_unicos),
-            total_costo,
-        ]
+    return [
+        producto_seleccionado,
+        total_facturado,
+        total_ventas,
+        ventas_por_modelo,
+        len(clientes_unicos),
+        total_costo,
+    ]
 
 
 """
